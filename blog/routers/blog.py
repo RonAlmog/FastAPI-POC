@@ -1,4 +1,5 @@
 from typing import List
+from urllib import request
 from fastapi import APIRouter,  Depends, FastAPI, status, Response, HTTPException
 from sqlalchemy.orm import Session
 from blog import database
@@ -24,35 +25,15 @@ def create(request: schemas.Blog, db: Session = Depends(get_db)):
 
 
 @router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
-def delete(id, db: Session = Depends(get_db)):
-    blog = db.query(models.Blog).filter(models.Blog.id ==
-                                        id)
-    if not blog.first():
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail='not found')
-
-    blog.delete(synchronize_session=False)
-    db.commit()
-    return 'done'
+def delete(id: int, db: Session = Depends(get_db)):
+    return blog.delete(id, db)
 
 
 @router.put('/{id}', status_code=status.HTTP_202_ACCEPTED)
-def update(id, request: schemas.Blog, db: Session = Depends(get_db)):
-    blog = db.query(models.Blog).filter(models.Blog.id == id)
-    if not blog.first():
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail='Blog not found')
-
-    blog.update(dict(request))
-    db.commit()
-    return 'updated'
+def update(id: int, requst: schemas.Blog, db: Session = Depends(get_db)):
+    return blog.update(id, request, db)
 
 
 @router.get('/{id}', status_code=status.HTTP_200_OK, response_model=schemas.ShowBlog)
-def getall(id, db: Session = Depends(get_db)):
-    blog = db.query(models.Blog).filter(models.Blog.id == id).first()
-    if not blog:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Blog with id {id} is not available")
-
-    return blog
+def getall(id: int, db: Session = Depends(get_db)):
+    return blog.show(id, db)

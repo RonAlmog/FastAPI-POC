@@ -6,3 +6,6 @@ pwd_ctx = CryptContext(schemes=["bcrypt"], deprecated="auto")
 class Hash():
     def bcrypt(password: str):
         return pwd_ctx.hash(password)
+
+    def verify(hashed_pass, plain_pass):
+        return pwd_ctx.verify(plain_pass, hashed_pass)

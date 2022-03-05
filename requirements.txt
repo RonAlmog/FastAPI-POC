@@ -1,5 +1,6 @@
-fastapi
-uvicorn
-sqlalchemy
-passlib
-bcrypt
+fastapi         
+uvicorn         # server
+sqlalchemy      # orm
+passlib         # password hashing
+bcrypt          # hashing
+python-jose     # objec siging and encryption (token)

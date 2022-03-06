@@ -4,3 +4,4 @@ sqlalchemy      # orm
 passlib         # password hashing
 bcrypt          # hashing
 python-jose     # objec siging and encryption (token)
+python-multipart
